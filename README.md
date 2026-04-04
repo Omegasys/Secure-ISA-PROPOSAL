@@ -25,3 +25,11 @@ User Instructions:
 Encryption Instrucions:
   2 double rachet
   3 encryption
+
+
+
+Bit:
+32
+64
+128
+256
