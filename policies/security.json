@@ -1,0 +1,27 @@
+{
+"secure_boot_required": true,
+"immutable_memory_allowed": true,
+"privilege_escalation_requires_capability": true,
+
+"sandboxing": {
+"default_mode": "strict",
+"escape_protection": true,
+"shared_memory_default": false
+},
+
+"execution": {
+"no_raw_pointer_access": true,
+"capability_required_every_memory_access": true,
+"deterministic_mode_available": true
+},
+
+"isolation": {
+"mandatory_domain_separation": true,
+"cross_domain_memory_access": false
+},
+
+"side_channel_protection": {
+"timing_attack_mitigation": true,
+"cache_partitioning": true
+}
+}
