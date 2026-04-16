@@ -1,0 +1,42 @@
+name: LOG
+category: Security/Audit
+format: S
+
+description: |
+Writes a structured event to the hardware audit log.
+
+operands:
+
+* name: event_id
+  type: immediate
+  description: Identifier for event type
+* name: data_cap
+  type: CR
+  description: Capability pointing to event data
+
+encoding:
+opcode: 0xB0
+fields:
+event_id: [11, 7]
+data_cap: [19, 15]
+
+semantics: |
+assert(data_cap.perm includes READ)
+
+event = READ_MEMORY(data_cap)
+AUDIT_LOG_APPEND(event_id, event)
+
+security:
+
+* tamper_evident_logging
+* immutable_append_only_log
+* capability_required_data_access
+
+side_effects:
+
+* modifies_audit_log
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* LOG_WRITE_FAILURE
