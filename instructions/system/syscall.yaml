@@ -1,0 +1,39 @@
+name: SYSCALL
+category: System
+format: S
+
+description: |
+Transfers control to the operating system via a controlled system call interface.
+
+operands:
+
+* name: syscall_id
+  type: immediate
+  description: System call identifier
+* name: arg_cap
+  type: CR
+  description: Capability containing syscall arguments
+
+encoding:
+opcode: 0xA0
+fields:
+syscall_id: [11, 7]
+arg_cap: [19, 15]
+
+semantics: |
+assert(current_privilege >= USER)
+
+SAVE_CONTEXT()
+ENTER_KERNEL_MODE()
+
+DISPATCH_SYSCALL(syscall_id, arg_cap)
+
+security:
+
+* privilege_transition_controlled
+* capability_required_args
+
+exceptions:
+
+* INVALID_SYSCALL
+* PRIVILEGE_VIOLATION
