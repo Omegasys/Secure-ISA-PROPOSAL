@@ -1,0 +1,31 @@
+name: SECURE_BOOT_VERIFY
+category: Security/SecureBoot
+format: R
+
+description: |
+Verifies system firmware and boot chain integrity before execution continues.
+
+encoding:
+opcode: 0xF0
+fields: {}
+
+semantics: |
+hash = COMPUTE_BOOT_HASH()
+
+assert(hash == TRUSTED_ROOT_HASH)
+
+BOOT_STATE = VERIFIED
+
+security:
+
+* root_of_trust_required
+* tamper_detection
+* immutable_verification_chain
+
+side_effects:
+
+* enables_execution_continuation
+
+exceptions:
+
+* BOOT_VERIFICATION_FAILED
