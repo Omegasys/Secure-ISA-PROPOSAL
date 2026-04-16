@@ -1,0 +1,28 @@
+name: SANDBOX_ENTER
+category: Security/Sandbox
+format: R
+
+description: |
+Enters an existing sandboxed execution environment.
+
+encoding:
+opcode: 0xC1
+fields: {}
+
+semantics: |
+assert(SANDBOX_ACTIVE == true)
+
+SWITCH_TO_SANDBOX_CONTEXT()
+
+security:
+
+* strict_isolation
+* context_integrity
+
+side_effects:
+
+* switches_execution_domain
+
+exceptions:
+
+* INVALID_SANDBOX_STATE
