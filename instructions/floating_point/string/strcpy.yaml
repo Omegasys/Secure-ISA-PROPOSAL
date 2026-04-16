@@ -1,0 +1,49 @@
+name: STRCPY
+category: String
+format: C
+
+description: |
+Copies a null-terminated string from source to destination using capability-checked memory regions.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Destination capability
+* name: cs
+  type: CR
+  description: Source capability
+
+encoding:
+opcode: 0x70
+fields:
+cd: [11, 7]
+cs: [19, 15]
+
+semantics: |
+i = 0
+while true:
+assert(cs.base + i within cs.bounds)
+assert(cd.base + i within cd.bounds)
+
+```
+  byte = MEM[cs.base + i]
+  MEM[cd.base + i] = byte
+
+  if byte == 0:
+      break
+
+  i += 1
+```
+
+security:
+
+* capability_bounds_enforced
+* no_overflow_write
+* termination_required
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* BOUNDS_FAULT
+* NON_TERMINATING_STRING
