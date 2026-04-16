@@ -1,0 +1,28 @@
+name: TRACE_OFF
+category: Security/Audit
+format: R
+
+description: |
+Disables instruction-level execution tracing.
+
+encoding:
+opcode: 0xB2
+fields: {}
+
+semantics: |
+assert(current_privilege >= SUPERVISOR)
+
+TRACE_MODE = DISABLED
+
+security:
+
+* privileged_control
+* anti_tamper_audit_state
+
+side_effects:
+
+* disables_execution_tracing
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
