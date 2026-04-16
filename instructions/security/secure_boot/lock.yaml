@@ -1,0 +1,29 @@
+name: SECURE_BOOT_LOCK
+category: Security/SecureBoot
+format: R
+
+description: |
+Locks secure boot state to prevent modification of verified boot chain.
+
+encoding:
+opcode: 0xF2
+fields: {}
+
+semantics: |
+assert(current_privilege >= HYPERVISOR)
+
+SECURE_BOOT_STATE = LOCKED
+
+security:
+
+* irreversible_state_transition
+* privilege_required
+* boot_chain_protection
+
+side_effects:
+
+* prevents_boot_modification
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
