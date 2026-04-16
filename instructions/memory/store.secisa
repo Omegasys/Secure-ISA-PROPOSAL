@@ -1,0 +1,32 @@
+INSTRUCTION: SSTORE
+
+CATEGORY: Secure Memory Access
+
+SYNTAX:
+SSTORE [Raddr], Rsrc, MODE
+
+MODES:
+- RAW
+- ENC        (encrypt before write)
+- SIGN       (encrypt + integrity tag)
+
+DESCRIPTION:
+Securely writes data to memory with encryption and integrity enforcement.
+
+EXECUTION:
+1. Validate write permissions across all levels
+2. Apply sandbox restrictions
+3. If MODE = ENC or SIGN:
+   - Encrypt data
+   - Optional double ratchet update
+4. Apply memory tag
+5. Write data
+6. Log operation
+
+FAULTS:
+- WRITE_VIOLATION
+- ENCRYPTION_FAILURE
+
+SECURITY:
+- Prevents unauthorized writes
+- Ensures data integrity
