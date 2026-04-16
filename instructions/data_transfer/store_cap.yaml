@@ -1,0 +1,45 @@
+name: STORE_CAP
+category: DataTransfer
+format: C
+
+description: |
+Store a capability register into memory with tag preservation.
+
+operands:
+
+* name: rs1
+  type: CR
+  description: Capability providing memory access
+* name: cs2
+  type: CR
+  description: Source capability register
+* name: offset
+  type: immediate
+  description: Offset from base
+
+encoding:
+opcode: 0x05
+fields:
+rs1: [19, 15]
+cs2: [24, 20]
+offset: [31, 7]
+
+semantics: |
+addr = rs1.base + offset
+assert(addr within rs1.bounds)
+assert(rs1.perm includes WRITE)
+
+MEM[addr] = cs2
+MEM[addr].tag = VALID
+
+security:
+
+* capability_check
+* bounds_check
+* permission_check
+* tag_preservation
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* ACCESS_FAULT
