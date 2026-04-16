@@ -1,0 +1,25 @@
+name: EXIT_LEVEL
+category: Virtualization
+format: R
+
+description: |
+Exits the current virtualization level and returns to the previous one.
+
+encoding:
+opcode: 0xE1
+fields: {}
+
+semantics: |
+EXIT_VIRTUALIZATION_LEVEL()
+
+security:
+
+* controlled_hierarchy_transition
+
+side_effects:
+
+* restores_previous_virtual_context
+
+exceptions:
+
+* INVALID_STATE
