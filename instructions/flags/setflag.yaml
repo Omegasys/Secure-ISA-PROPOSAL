@@ -1,0 +1,35 @@
+name: SETFLAG
+category: Flags
+format: R
+
+description: |
+Sets a processor flag in the status register.
+
+operands:
+
+* name: flag_id
+  type: immediate
+  description: Identifier of the flag to set
+
+encoding:
+opcode: 0x90
+fields:
+flag_id: [11, 7]
+
+semantics: |
+assert(flag_id is valid)
+
+FLAGS[flag_id] = 1
+
+security:
+
+* privileged_flag_required (for security-sensitive flags)
+
+side_effects:
+
+* modifies_processor_state
+
+exceptions:
+
+* INVALID_FLAG
+* PRIVILEGE_VIOLATION
