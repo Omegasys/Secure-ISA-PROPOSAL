@@ -1,0 +1,46 @@
+name: PGP_SIGN
+category: Crypto
+format: S
+
+description: |
+Creates a digital signature over data using a private key capability.
+
+operands:
+
+* name: privkey_cap
+  type: CR
+  description: Private key capability
+* name: data_cap
+  type: CR
+  description: Data to sign
+* name: sig_cap
+  type: CR
+  description: Output signature buffer
+
+encoding:
+opcode: 0x105
+fields:
+privkey_cap: [11, 7]
+data_cap: [19, 15]
+sig_cap: [27, 23]
+
+semantics: |
+assert(privkey_cap.perm includes SIGN)
+
+signature = SIGN_DATA(privkey_cap.key, READ_MEMORY(data_cap))
+
+WRITE_MEMORY(sig_cap, signature)
+
+security:
+
+* non_repudiation
+* private_key_isolation
+
+side_effects:
+
+* produces_signature
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* SIGN_FAILURE
