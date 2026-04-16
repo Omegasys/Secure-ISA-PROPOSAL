@@ -1,0 +1,42 @@
+name: USER_SET_LEVEL
+category: Security/User
+format: S
+
+description: |
+Sets the current user privilege level within the ISA-defined hierarchy.
+
+operands:
+
+* name: level
+  type: immediate
+  description: Target privilege level
+* name: auth_cap
+  type: CR
+  description: Capability authorizing privilege change
+
+encoding:
+opcode: 0x110
+fields:
+level: [11, 7]
+auth_cap: [19, 15]
+
+semantics: |
+assert(auth_cap.perm includes PRIVILEGE_CHANGE)
+assert(level within ALLOWED_USER_LEVELS)
+
+CURRENT_USER_LEVEL = level
+
+security:
+
+* capability_required_privilege_escalation
+* bounded_privilege_domain
+* no_implicit_root_access
+
+side_effects:
+
+* modifies_execution_privilege
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_LEVEL
