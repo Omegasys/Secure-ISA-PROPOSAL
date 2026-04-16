@@ -1,0 +1,48 @@
+name: VLOAD
+category: VectorSIMD
+format: C
+
+description: |
+Loads a vector from memory using a capability-checked base address.
+
+operands:
+
+* name: vd
+  type: VR
+  description: Destination vector register
+* name: cs1
+  type: CR
+  description: Capability providing memory access
+* name: offset
+  type: immediate
+  description: Offset from base
+
+encoding:
+opcode: 0x54
+fields:
+vd: [11, 7]
+cs1: [19, 15]
+offset: [31, 20]
+
+semantics: |
+base_addr = cs1.base + offset
+
+assert(cs1.tag == VALID)
+assert(cs1.perm includes READ)
+
+for i in 0..VLEN-1:
+addr = base_addr + (i * ELEMENT_SIZE)
+assert(addr within cs1.bounds)
+vd[i] = MEM[addr]
+
+security:
+
+* capability_check
+* bounds_check_per_element
+* permission_check
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* ACCESS_FAULT
+* MISALIGNED_ACCESS
