@@ -1,0 +1,23 @@
+name: HALT
+category: System
+format: R
+
+description: |
+Stops execution of the current core.
+
+encoding:
+opcode: 0xA3
+fields: {}
+
+semantics: |
+HALT_CPU()
+
+security:
+
+* privileged_or_debug_only
+
+side_effects:
+
+* terminates_execution
+
+exceptions: []
