@@ -1,0 +1,49 @@
+name: REMOTE_EXECUTE
+category: Security/Remote
+format: S
+
+description: |
+Executes code on a remote attested system under strict capability control.
+
+operands:
+
+* name: session_cap
+  type: CR
+  description: Verified remote session
+* name: code_cap
+  type: CR
+  description: Code payload capability
+* name: result_cap
+  type: CR
+  description: Output buffer capability
+
+encoding:
+opcode: 0xD2
+fields:
+session_cap: [11, 7]
+code_cap: [19, 15]
+result_cap: [27, 23]
+
+semantics: |
+assert(session_cap.attested == true)
+assert(code_cap.perm includes EXECUTE)
+
+result = EXECUTE_REMOTE(session_cap, code_cap)
+
+WRITE_MEMORY(result_cap, result)
+
+security:
+
+* attestation_required
+* capability_execution_control
+* sandboxed_remote_execution
+
+side_effects:
+
+* executes_code_on_remote_node
+
+exceptions:
+
+* ATTESTATION_REQUIRED
+* EXECUTION_DENIED
+* CAPABILITY_VIOLATION
