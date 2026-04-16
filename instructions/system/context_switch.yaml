@@ -1,0 +1,39 @@
+name: CONTEXT_SWITCH
+category: System
+format: S
+
+description: |
+Switches execution context between processes or domains.
+
+operands:
+
+* name: context_cap
+  type: CR
+  description: Capability describing target execution context
+
+encoding:
+opcode: 0xA4
+fields:
+context_cap: [19, 15]
+
+semantics: |
+assert(context_cap.tag == VALID)
+
+SAVE_CURRENT_CONTEXT()
+LOAD_CONTEXT(context_cap)
+
+security:
+
+* capability_required
+* isolation_enforced
+* no_state_leakage
+
+side_effects:
+
+* full_register_swap
+* tlb_flush_or_partition_switch
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_CONTEXT
