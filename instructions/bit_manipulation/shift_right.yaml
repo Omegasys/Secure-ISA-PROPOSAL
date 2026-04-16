@@ -1,0 +1,41 @@
+name: SHIFT_RIGHT
+category: BitManipulation
+format: R
+
+description: |
+Logical right shift (zero-fill).
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Value to shift
+* name: rs2
+  type: GPR
+  description: Shift amount
+
+encoding:
+opcode: 0x34
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+shift = rs2 % XLEN
+rd = rs1 >> shift
+
+flags:
+
+* ZERO
+
+security:
+
+* constant_time
+
+exceptions:
+
+* INVALID_SHIFT (optional)
