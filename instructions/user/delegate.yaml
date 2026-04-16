@@ -1,0 +1,46 @@
+name: USER_DELEGATE
+category: Security/User
+format: S
+
+description: |
+Delegates a subset of privileges to another capability.
+
+operands:
+
+* name: source_cap
+  type: CR
+  description: Capability being delegated from
+* name: target_cap
+  type: CR
+  description: New delegated capability
+* name: mask
+  type: immediate
+  description: Permission bitmask
+
+encoding:
+opcode: 0x112
+fields:
+source_cap: [11, 7]
+target_cap: [19, 15]
+mask: [31, 20]
+
+semantics: |
+assert(source_cap.perm includes DELEGATE)
+assert(mask ⊆ source_cap.perm)
+
+target_cap.perm = mask
+
+security:
+
+* controlled_capability_delegation
+* no_privilege_escalation
+* subset_enforcement
+
+side_effects:
+
+* creates_new_capability_view
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_DELEGATION
