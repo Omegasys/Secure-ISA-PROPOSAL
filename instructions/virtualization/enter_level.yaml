@@ -1,0 +1,36 @@
+name: ENTER_LEVEL
+category: Virtualization
+format: R
+
+description: |
+Enters a higher or nested virtualization level.
+
+operands:
+
+* name: level_id
+  type: immediate
+  description: Virtualization level identifier
+
+encoding:
+opcode: 0xE0
+fields:
+level_id: [11, 7]
+
+semantics: |
+assert(level_id within MAX_VIRTUAL_LEVELS)
+
+ENTER_VIRTUALIZATION_LEVEL(level_id)
+
+security:
+
+* hierarchical_isolation_enforced
+* privilege_bound_required
+
+side_effects:
+
+* changes_execution_context_layer
+
+exceptions:
+
+* INVALID_LEVEL
+* PRIVILEGE_VIOLATION
