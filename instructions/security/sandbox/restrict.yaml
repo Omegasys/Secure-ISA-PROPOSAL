@@ -1,0 +1,40 @@
+name: SANDBOX_RESTRICT
+category: Security/Sandbox
+format: S
+
+description: |
+Applies additional restrictions to an existing sandbox.
+
+operands:
+
+* name: sandbox_cap
+  type: CR
+  description: Target sandbox capability
+* name: restriction_mask
+  type: immediate
+  description: Bitmask of restrictions
+
+encoding:
+opcode: 0xC3
+fields:
+sandbox_cap: [11, 7]
+restriction_mask: [31, 15]
+
+semantics: |
+assert(sandbox_cap.tag == VALID)
+
+APPLY_SANDBOX_RESTRICTIONS(sandbox_cap, restriction_mask)
+
+security:
+
+* incremental_hardening_supported
+* capability_required
+
+side_effects:
+
+* modifies_sandbox_policy
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_SANDBOX
