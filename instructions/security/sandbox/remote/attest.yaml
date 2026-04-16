@@ -1,0 +1,42 @@
+name: REMOTE_ATTEST
+category: Security/Remote
+format: S
+
+description: |
+Performs remote attestation of a target system before trust is established.
+
+operands:
+
+* name: session_cap
+  type: CR
+  description: Active remote session
+* name: attestation_cap
+  type: CR
+  description: Output attestation result buffer
+
+encoding:
+opcode: 0xD1
+fields:
+session_cap: [11, 7]
+attestation_cap: [19, 15]
+
+semantics: |
+assert(session_cap.valid == true)
+
+result = PERFORM_ATTESTATION(session_cap)
+
+WRITE_MEMORY(attestation_cap, result)
+
+security:
+
+* cryptographic_verification_required
+* trusted_execution_environment_check
+
+side_effects:
+
+* produces_trust_report
+
+exceptions:
+
+* ATTESTATION_FAILED
+* CAPABILITY_VIOLATION
