@@ -1,0 +1,45 @@
+name: INPUT
+category: IO
+format: S
+
+description: |
+Reads data from an input device into memory via a capability.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Destination memory capability
+* name: device_id
+  type: immediate
+  description: Input device identifier
+* name: size
+  type: immediate
+  description: Number of bytes to read
+
+encoding:
+opcode: 0x80
+fields:
+cd: [11, 7]
+device_id: [19, 15]
+size: [31, 20]
+
+semantics: |
+assert(cd.perm includes WRITE)
+assert(size within cd.bounds)
+
+data = DEVICE_READ(device_id, size)
+
+for i in 0..size:
+MEM[cd.base + i] = data[i]
+
+security:
+
+* capability_enforced_write
+* device_isolation
+* bounded_io
+
+exceptions:
+
+* DEVICE_FAULT
+* CAPABILITY_VIOLATION
