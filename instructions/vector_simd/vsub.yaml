@@ -1,0 +1,42 @@
+name: VSUB
+category: VectorSIMD
+format: R
+
+description: |
+Performs element-wise subtraction.
+
+operands:
+
+* name: vd
+  type: VR
+  description: Destination vector register
+* name: vs1
+  type: VR
+  description: First source vector
+* name: vs2
+  type: VR
+  description: Second source vector
+
+encoding:
+opcode: 0x51
+fields:
+vd: [11, 7]
+vs1: [19, 15]
+vs2: [24, 20]
+
+semantics: |
+for i in 0..VLEN-1:
+vd[i] = vs1[i] - vs2[i]
+
+flags:
+
+* VECTOR_ZERO
+* VECTOR_OVERFLOW
+
+security:
+
+* constant_time_per_lane
+
+exceptions:
+
+* VECTOR_OVERFLOW (optional)
