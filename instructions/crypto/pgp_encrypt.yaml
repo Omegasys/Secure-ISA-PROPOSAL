@@ -1,0 +1,46 @@
+name: PGP_ENCRYPT
+category: Crypto
+format: S
+
+description: |
+Encrypts data using a public key capability (PGP-style encryption).
+
+operands:
+
+* name: pubkey_cap
+  type: CR
+  description: Public key capability
+* name: data_cap
+  type: CR
+  description: Input data
+* name: out_cap
+  type: CR
+  description: Output buffer
+
+encoding:
+opcode: 0x106
+fields:
+pubkey_cap: [11, 7]
+data_cap: [19, 15]
+out_cap: [27, 23]
+
+semantics: |
+assert(pubkey_cap.perm includes ENCRYPT)
+
+ciphertext = ENCRYPT_DATA(pubkey_cap.key, READ_MEMORY(data_cap))
+
+WRITE_MEMORY(out_cap, ciphertext)
+
+security:
+
+* confidentiality_guaranteed
+* public_key_safe_usage
+
+side_effects:
+
+* cryptographic_encryption
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* ENCRYPTION_FAILURE
