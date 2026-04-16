@@ -1,0 +1,48 @@
+name: LOAD_CAP
+category: DataTransfer
+format: C
+
+description: |
+Load a capability from memory into a capability register.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Destination capability register
+* name: rs1
+  type: CR
+  description: Capability providing access to memory
+* name: offset
+  type: immediate
+  description: Offset from base
+
+encoding:
+opcode: 0x04
+fields:
+cd: [11, 7]
+rs1: [19, 15]
+offset: [31, 20]
+
+semantics: |
+addr = rs1.base + offset
+assert(addr within rs1.bounds)
+assert(rs1.perm includes READ)
+
+cap = MEM[addr]
+assert(cap.tag == VALID)
+
+cd = cap
+
+security:
+
+* capability_check
+* bounds_check
+* permission_check
+* tag_validation
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_CAPABILITY
+* ACCESS_FAULT
