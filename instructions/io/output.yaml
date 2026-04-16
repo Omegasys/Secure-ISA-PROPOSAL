@@ -1,0 +1,42 @@
+name: OUTPUT
+category: IO
+format: S
+
+description: |
+Writes data from memory to an output device using a capability.
+
+operands:
+
+* name: cs
+  type: CR
+  description: Source memory capability
+* name: device_id
+  type: immediate
+  description: Output device identifier
+* name: size
+  type: immediate
+  description: Number of bytes to write
+
+encoding:
+opcode: 0x81
+fields:
+cs: [11, 7]
+device_id: [19, 15]
+size: [31, 20]
+
+semantics: |
+assert(cs.perm includes READ)
+
+for i in 0..size:
+DEVICE_WRITE(device_id, MEM[cs.base + i])
+
+security:
+
+* capability_enforced_read
+* device_isolation
+* bounded_io
+
+exceptions:
+
+* DEVICE_FAULT
+* CAPABILITY_VIOLATION
