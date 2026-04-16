@@ -1,0 +1,38 @@
+name: RETURN
+category: ControlTransfer
+format: R
+
+description: |
+Returns from a function using a stored return address.
+
+operands:
+
+* name: rs1
+  type: GPR
+  description: Register containing return address
+
+encoding:
+opcode: 0x42
+fields:
+rs1: [19, 15]
+
+semantics: |
+target = rs1
+
+assert(is_valid_code_address(target))
+
+PC = target
+
+security:
+
+* control_flow_integrity
+* shadow_stack_check (optional)
+
+exceptions:
+
+* INVALID_RETURN
+* EXECUTION_FAULT
+
+notes: |
+Strongly recommended to pair with hardware shadow stack
+to prevent return-oriented programming attacks.
