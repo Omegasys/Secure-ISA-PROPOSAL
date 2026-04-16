@@ -1,0 +1,44 @@
+name: SUB
+category: Arithmetic
+format: R
+
+description: |
+Subtracts the second operand from the first.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Minuend
+* name: rs2
+  type: GPR
+  description: Subtrahend
+
+encoding:
+opcode: 0x11
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+result = rs1 - rs2
+rd = result
+
+flags:
+
+* ZERO
+* NEGATIVE
+* OVERFLOW
+* BORROW
+
+security:
+
+* constant_time (implementation dependent)
+
+exceptions:
+
+* INTEGER_OVERFLOW (optional)
