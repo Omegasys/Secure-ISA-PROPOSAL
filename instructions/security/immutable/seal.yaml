@@ -1,0 +1,29 @@
+name: IMMUTABLE_SEAL
+category: Security/Immutable
+format: R
+
+description: |
+Seals a memory region, preventing any future modification or unsealing without privileged authority.
+
+encoding:
+opcode: 0xF5
+fields: {}
+
+semantics: |
+assert(current_privilege >= KERNEL)
+
+SEAL_ALL_IMMUTABLE_REGIONS()
+
+security:
+
+* irreversible_protection_mode
+* kernel_privilege_required
+* anti_tamper_enforcement
+
+side_effects:
+
+* locks_memory_state_permanently_until_reset
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
