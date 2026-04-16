@@ -1,0 +1,27 @@
+name: USER_GET_LEVEL
+category: Security/User
+format: R
+
+description: |
+Reads the current user privilege level.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+
+encoding:
+opcode: 0x111
+fields:
+rd: [11, 7]
+
+semantics: |
+rd = CURRENT_USER_LEVEL
+
+security:
+
+* read_only_safe
+* no_side_effects
+
+exceptions: []
