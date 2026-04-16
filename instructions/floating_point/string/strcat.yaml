@@ -1,0 +1,55 @@
+name: STRCAT
+category: String
+format: C
+
+description: |
+Concatenates source string to destination string safely.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Destination string capability
+* name: cs
+  type: CR
+  description: Source string capability
+
+encoding:
+opcode: 0x73
+fields:
+cd: [11, 7]
+cs: [19, 15]
+
+semantics: |
+i = 0
+
+# find end of destination
+
+while MEM[cd.base + i] != 0:
+i += 1
+
+j = 0
+while true:
+assert(cd.base + i within cd.bounds)
+assert(cs.base + j within cs.bounds)
+
+```
+  byte = MEM[cs.base + j]
+  MEM[cd.base + i] = byte
+
+  if byte == 0:
+      break
+
+  i += 1
+  j += 1
+```
+
+security:
+
+* capability_bounds_enforced
+* overflow_prevention_required
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* BOUNDS_FAULT
