@@ -1,0 +1,31 @@
+name: MOVE
+category: DataTransfer
+format: R
+
+description: |
+Move data between registers. Does not access memory.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Source register
+
+encoding:
+opcode: 0x03
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+
+semantics: |
+rd = rs1
+
+security:
+
+* no_memory_access
+* no_capability_required
+
+exceptions: []
