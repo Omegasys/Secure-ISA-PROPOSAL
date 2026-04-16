@@ -1,0 +1,44 @@
+name: DIV
+category: Arithmetic
+format: R
+
+description: |
+Divides the first operand by the second.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Dividend
+* name: rs2
+  type: GPR
+  description: Divisor
+
+encoding:
+opcode: 0x13
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+assert(rs2 != 0)
+result = rs1 / rs2
+rd = result
+
+flags:
+
+* ZERO
+* NEGATIVE
+
+security:
+
+* constant_time (NOT guaranteed unless CT mode enabled)
+
+exceptions:
+
+* DIVIDE_BY_ZERO
+* INTEGER_OVERFLOW (optional)
