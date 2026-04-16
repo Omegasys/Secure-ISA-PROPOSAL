@@ -1,0 +1,37 @@
+name: ISOLATE
+category: Virtualization
+format: S
+
+description: |
+Creates a fully isolated virtual execution domain.
+
+operands:
+
+* name: domain_cap
+  type: CR
+  description: Capability defining isolation domain
+
+encoding:
+opcode: 0xE3
+fields:
+domain_cap: [11, 7]
+
+semantics: |
+assert(current_privilege >= HYPERVISOR)
+
+CREATE_ISOLATED_DOMAIN(domain_cap)
+
+security:
+
+* strong_isolation_required
+* no_shared_memory_default
+* capability_enforced_boundaries
+
+side_effects:
+
+* allocates_isolated_virtual_domain
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
+* CAPABILITY_VIOLATION
