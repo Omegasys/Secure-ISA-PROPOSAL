@@ -1,0 +1,28 @@
+name: TRACE_ON
+category: Security/Audit
+format: R
+
+description: |
+Enables instruction-level execution tracing.
+
+encoding:
+opcode: 0xB1
+fields: {}
+
+semantics: |
+assert(current_privilege >= SUPERVISOR)
+
+TRACE_MODE = ENABLED
+
+security:
+
+* privileged_control
+* audit_state_protected
+
+side_effects:
+
+* enables_full_execution_tracing
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
