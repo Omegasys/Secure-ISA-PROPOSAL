@@ -1,0 +1,49 @@
+name: RATCHET_MESSAGE
+category: Crypto
+format: S
+
+description: |
+Encrypts or decrypts a message using a ratcheting session state.
+
+operands:
+
+* name: session_cap
+  type: CR
+  description: Ratchet session capability
+* name: msg_cap
+  type: CR
+  description: Message buffer
+* name: out_cap
+  type: CR
+  description: Output buffer
+
+encoding:
+opcode: 0x103
+fields:
+session_cap: [11, 7]
+msg_cap: [19, 15]
+out_cap: [27, 23]
+
+semantics: |
+assert(session_cap.state == ACTIVE)
+
+result = RATCHET_PROCESS(session_cap.state, READ_MEMORY(msg_cap))
+
+ADVANCE_RATCHET(session_cap)
+
+WRITE_MEMORY(out_cap, result)
+
+security:
+
+* forward_secrecy_enforced
+* replay_attack_resistance
+* state_isolation_required
+
+side_effects:
+
+* mutates_session_state
+
+exceptions:
+
+* INVALID_SESSION
+* CAPABILITY_VIOLATION
