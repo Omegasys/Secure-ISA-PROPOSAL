@@ -1,0 +1,43 @@
+version: 1.0
+
+description: |
+Standard instruction formats for all ISA operations.
+
+formats:
+
+R:
+description: Register-to-register operations
+fields:
+opcode: [6, 0]
+rd:     [11, 7]
+rs1:    [19, 15]
+rs2:    [24, 20]
+
+I:
+description: Immediate-based operations
+fields:
+opcode: [6, 0]
+rd:     [11, 7]
+imm:    [31, 12]
+
+S:
+description: Structured capability or system operations
+fields:
+opcode:    [6, 0]
+field_a:   [11, 7]
+field_b:   [19, 15]
+immediate: [31, 20]
+
+C:
+description: Capability-heavy memory operations
+fields:
+opcode:  [6, 0]
+cd:      [11, 7]
+cs:      [19, 15]
+flags:   [31, 20]
+
+rules:
+
+* all_memory_ops_must_use_capability_format_C
+* system_ops_may_use_S_format_only
+* R_format_never_accesses_raw_memory
