@@ -1,0 +1,42 @@
+name: SECURE_BOOT_MEASURE
+category: Security/SecureBoot
+format: S
+
+description: |
+Measures (hashes) boot components and extends trust chain.
+
+operands:
+
+* name: component_cap
+  type: CR
+  description: Capability referencing boot component
+* name: measurement_cap
+  type: CR
+  description: Output measurement buffer
+
+encoding:
+opcode: 0xF1
+fields:
+component_cap: [11, 7]
+measurement_cap: [19, 15]
+
+semantics: |
+assert(component_cap.perm includes READ)
+
+measurement = HASH(component_cap.region)
+WRITE_MEMORY(measurement_cap, measurement)
+
+security:
+
+* measured_boot_chain
+* capability_enforced_read
+* tamper_evident_logging
+
+side_effects:
+
+* extends_trust_chain
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* MEASUREMENT_FAILURE
