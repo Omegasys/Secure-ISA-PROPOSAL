@@ -1,0 +1,35 @@
+name: NOT
+category: Logical
+format: R
+
+description: |
+Performs bitwise NOT (inversion) on a register.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Source register
+
+encoding:
+opcode: 0x23
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+
+semantics: |
+rd = ~rs1
+
+flags:
+
+* ZERO
+* NEGATIVE
+
+security:
+
+* constant_time
+
+exceptions: []
