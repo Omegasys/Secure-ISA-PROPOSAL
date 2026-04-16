@@ -1,0 +1,40 @@
+name: BRANCH_EQ
+category: ControlTransfer
+format: I
+
+description: |
+Conditional branch if two registers are equal.
+
+operands:
+
+* name: rs1
+  type: GPR
+  description: First operand
+* name: rs2
+  type: GPR
+  description: Second operand
+* name: offset
+  type: immediate
+  description: PC-relative offset
+
+encoding:
+opcode: 0x43
+fields:
+rs1: [19, 15]
+rs2: [24, 20]
+offset: [31, 7]
+
+semantics: |
+if rs1 == rs2:
+target = PC + offset
+assert(is_valid_code_address(target))
+PC = target
+
+security:
+
+* control_flow_integrity
+* bounded_branch
+
+exceptions:
+
+* INVALID_BRANCH_TARGET
