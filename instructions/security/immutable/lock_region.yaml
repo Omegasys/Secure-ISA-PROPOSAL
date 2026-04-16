@@ -1,0 +1,37 @@
+name: IMMUTABLE_LOCK_REGION
+category: Security/Immutable
+format: S
+
+description: |
+Locks a memory region as immutable (write-protected permanently or until reboot).
+
+operands:
+
+* name: region_cap
+  type: CR
+  description: Capability defining memory region
+
+encoding:
+opcode: 0xF3
+fields:
+region_cap: [11, 7]
+
+semantics: |
+assert(region_cap.perm includes WRITE)
+
+SET_REGION_IMMUTABLE(region_cap)
+
+security:
+
+* write_once_enforcement
+* capability_controlled_memory_state
+* anti_tamper_protection
+
+side_effects:
+
+* permanently_or_logically_readonly_region
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* INVALID_REGION
