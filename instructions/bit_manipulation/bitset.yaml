@@ -1,0 +1,41 @@
+name: BITSET
+category: BitManipulation
+format: R
+
+description: |
+Sets a specific bit in a register.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Source register
+* name: rs2
+  type: GPR
+  description: Bit index (lower bits used)
+
+encoding:
+opcode: 0x30
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+bit = rs2 % XLEN
+rd = rs1 | (1 << bit)
+
+flags:
+
+* ZERO
+
+security:
+
+* constant_time
+
+exceptions:
+
+* INVALID_SHIFT (optional)
