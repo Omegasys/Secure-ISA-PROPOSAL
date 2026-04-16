@@ -1,0 +1,43 @@
+name: FSQRT
+category: FloatingPoint
+format: R
+
+description: |
+Floating-point square root operation.
+
+operands:
+
+* name: fd
+  type: FPR
+  description: Destination register
+* name: fs1
+  type: FPR
+  description: Input value
+
+encoding:
+opcode: 0x64
+fields:
+fd: [11, 7]
+fs1: [19, 15]
+
+semantics: |
+assert(fs1 >= 0.0)
+fd = sqrt(fs1)
+
+floating_point_rules:
+rounding_mode: dynamic_or_default
+
+flags:
+
+* FP_ZERO
+* FP_NEGATIVE
+* FP_INEXACT
+
+security:
+
+* constant_time (optional)
+
+exceptions:
+
+* INVALID_OPERAND
+* FLOATING_POINT_EXCEPTION
