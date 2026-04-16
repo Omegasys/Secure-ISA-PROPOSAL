@@ -1,0 +1,36 @@
+version: 1.0
+
+description: |
+Global opcode mapping for the Secure ISA. All instruction classes are partitioned by category to allow future extensibility.
+
+opcode_ranges:
+
+data_transfer:     [0x00, 0x0F]
+arithmetic:        [0x10, 0x1F]
+logical:           [0x20, 0x2F]
+bit_manipulation:  [0x30, 0x3F]
+control_transfer:  [0x40, 0x4F]
+vector_simd:       [0x50, 0x5F]
+floating_point:    [0x60, 0x6F]
+
+string:            [0x70, 0x7F]
+io:                [0x80, 0x8F]
+flags:             [0x90, 0x9F]
+
+system:            [0xA0, 0xAF]
+security_audit:    [0xB0, 0xBF]
+sandbox:           [0xC0, 0xCF]
+remote:            [0xD0, 0xDF]
+virtualization:    [0xE0, 0xEF]
+
+secure_boot:       [0xF0, 0xF2]
+immutable_memory:  [0xF3, 0xF5]
+
+crypto:            [0x100, 0x10F]
+user_privilege:    [0x110, 0x11F]
+
+rules:
+
+* no_opcode_overlapping
+* forward_compatible_extension_space_reserved
+* capability_ops_must_use_extended_encoding
