@@ -1,0 +1,28 @@
+name: UNMAP_DEVICE
+category: IO
+format: S
+
+description: |
+Removes a device mapping from a capability.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Device capability to revoke
+
+encoding:
+opcode: 0x83
+fields:
+cd: [11, 7]
+
+semantics: |
+REVOKE_CAPABILITY(cd)
+
+security:
+
+* privileged_operation_required
+
+exceptions:
+
+* INVALID_CAPABILITY
