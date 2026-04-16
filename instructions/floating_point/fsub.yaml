@@ -1,0 +1,45 @@
+name: FSUB
+category: FloatingPoint
+format: R
+
+description: |
+Floating-point subtraction.
+
+operands:
+
+* name: fd
+  type: FPR
+  description: Destination floating-point register
+* name: fs1
+  type: FPR
+  description: Minuend
+* name: fs2
+  type: FPR
+  description: Subtrahend
+
+encoding:
+opcode: 0x61
+fields:
+fd: [11, 7]
+fs1: [19, 15]
+fs2: [24, 20]
+
+semantics: |
+fd = fs1 - fs2
+
+floating_point_rules:
+rounding_mode: dynamic_or_default
+
+flags:
+
+* FP_ZERO
+* FP_NEGATIVE
+* FP_INEXACT
+
+security:
+
+* constant_time (optional)
+
+exceptions:
+
+* FLOATING_POINT_EXCEPTION
