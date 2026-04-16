@@ -1,0 +1,21 @@
+{
+"sandbox_model": "capability_based",
+
+"defaults": {
+"allow_network": false,
+"allow_io": false,
+"allow_shared_memory": false
+},
+
+"restrictions": {
+"memory_bounds_enforced": true,
+"syscall_filtering_required": true,
+"device_access_requires_capability": true
+},
+
+"lifecycle": {
+"creation_requires_kernel": true,
+"exit_requires_valid_state": true,
+"destruction_is_irreversible": false
+}
+}
