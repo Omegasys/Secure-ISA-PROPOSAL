@@ -1,0 +1,46 @@
+version: 1.0
+
+description: |
+Defines how different bit-width modes are encoded and interpreted across the ISA.
+
+bit_width_modes:
+
+32bit:
+register_width: 32
+address_width: 32
+capability_width: 64
+notes: "Minimal mode for embedded systems"
+
+64bit:
+register_width: 64
+address_width: 64
+capability_width: 128
+notes: "Default general-purpose mode"
+
+128bit:
+register_width: 128
+address_width: 128
+capability_width: 256
+notes: "High-assurance compute mode"
+
+256bit:
+register_width: 256
+address_width: 256
+capability_width: 512
+notes: "Experimental ultra-secure mode"
+
+rules:
+
+* capability_width_must_exceed_address_width
+* all_modes_share_opcode_space
+* no_instruction_redefinition_across_bitwidths
+
+migration_rules:
+
+* "downgrade_requires_state_seal"
+* "upgrade_requires_full_context_validation"
+
+security:
+
+* bitwidth_isolation_enforced
+* no_cross_mode_memory_interpretation
