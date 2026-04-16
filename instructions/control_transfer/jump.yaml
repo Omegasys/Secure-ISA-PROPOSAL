@@ -1,0 +1,43 @@
+name: JUMP
+category: ControlTransfer
+format: C
+
+description: |
+Unconditional jump to an address specified by a capability.
+
+operands:
+
+* name: cs1
+  type: CR
+  description: Capability containing target address
+* name: offset
+  type: immediate
+  description: Offset within capability bounds
+
+encoding:
+opcode: 0x40
+fields:
+cs1: [19, 15]
+offset: [31, 20]
+
+semantics: |
+target = cs1.base + offset
+
+assert(cs1.tag == VALID)
+assert(target within cs1.bounds)
+assert(cs1.perm includes EXECUTE)
+
+PC = target
+
+security:
+
+* capability_check
+* bounds_check
+* execute_permission
+* control_flow_integrity
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* EXECUTION_FAULT
+* MISALIGNED_TARGET
