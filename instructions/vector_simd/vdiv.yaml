@@ -1,0 +1,42 @@
+name: VDIV
+category: VectorSIMD
+format: R
+
+description: |
+Performs element-wise division.
+
+operands:
+
+* name: vd
+  type: VR
+  description: Destination vector register
+* name: vs1
+  type: VR
+  description: Dividend vector
+* name: vs2
+  type: VR
+  description: Divisor vector
+
+encoding:
+opcode: 0x53
+fields:
+vd: [11, 7]
+vs1: [19, 15]
+vs2: [24, 20]
+
+semantics: |
+for i in 0..VLEN-1:
+assert(vs2[i] != 0)
+vd[i] = vs1[i] / vs2[i]
+
+flags:
+
+* VECTOR_ZERO
+
+security:
+
+* constant_time_per_lane (NOT guaranteed unless CT mode enabled)
+
+exceptions:
+
+* DIVIDE_BY_ZERO
