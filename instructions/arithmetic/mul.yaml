@@ -1,0 +1,43 @@
+name: MUL
+category: Arithmetic
+format: R
+
+description: |
+Multiplies two registers.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: First operand
+* name: rs2
+  type: GPR
+  description: Second operand
+
+encoding:
+opcode: 0x12
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+result = rs1 * rs2
+rd = result
+
+flags:
+
+* ZERO
+* NEGATIVE
+* OVERFLOW
+
+security:
+
+* constant_time (optional mode required for secure contexts)
+
+exceptions:
+
+* INTEGER_OVERFLOW (optional)
