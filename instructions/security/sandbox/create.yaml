@@ -1,0 +1,37 @@
+name: SANDBOX_CREATE
+category: Security/Sandbox
+format: S
+
+description: |
+Creates a new isolated execution sandbox.
+
+operands:
+
+* name: sandbox_cap
+  type: CR
+  description: Capability describing sandbox memory and permissions
+
+encoding:
+opcode: 0xC0
+fields:
+sandbox_cap: [19, 15]
+
+semantics: |
+assert(current_privilege >= KERNEL)
+
+SANDBOX_CREATE_CONTEXT(sandbox_cap)
+
+security:
+
+* isolation_enforced
+* capability_required
+* no_shared_memory_by_default
+
+side_effects:
+
+* allocates_isolated_domain
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
+* CAPABILITY_VIOLATION
