@@ -1,0 +1,32 @@
+name: READFLAG
+category: Flags
+format: R
+
+description: |
+Reads a processor flag into a general-purpose register.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: flag_id
+  type: immediate
+  description: Identifier of the flag
+
+encoding:
+opcode: 0x92
+fields:
+rd: [11, 7]
+flag_id: [19, 15]
+
+semantics: |
+rd = FLAGS[flag_id]
+
+security:
+
+* read_only_safe_state
+
+exceptions:
+
+* INVALID_FLAG
