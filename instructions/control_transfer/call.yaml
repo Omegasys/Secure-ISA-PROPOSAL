@@ -1,0 +1,45 @@
+name: CALL
+category: ControlTransfer
+format: C
+
+description: |
+Calls a function via a capability and saves return address securely.
+
+operands:
+
+* name: cs1
+  type: CR
+  description: Capability for target function
+* name: rd
+  type: GPR
+  description: Return address register
+
+encoding:
+opcode: 0x41
+fields:
+rd: [11, 7]
+cs1: [19, 15]
+
+semantics: |
+target = cs1.base
+
+assert(cs1.tag == VALID)
+assert(cs1.perm includes EXECUTE)
+
+rd = PC + 4
+PC = target
+
+security:
+
+* capability_check
+* execute_permission
+* return_address_integrity
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* EXECUTION_FAULT
+
+notes: |
+Implementations SHOULD support shadow stack integration
+to protect return addresses.
