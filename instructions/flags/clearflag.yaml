@@ -1,0 +1,35 @@
+name: CLEARFLAG
+category: Flags
+format: R
+
+description: |
+Clears a processor flag in the status register.
+
+operands:
+
+* name: flag_id
+  type: immediate
+  description: Identifier of the flag to clear
+
+encoding:
+opcode: 0x91
+fields:
+flag_id: [11, 7]
+
+semantics: |
+assert(flag_id is valid)
+
+FLAGS[flag_id] = 0
+
+security:
+
+* privileged_flag_required (for security-sensitive flags)
+
+side_effects:
+
+* modifies_processor_state
+
+exceptions:
+
+* INVALID_FLAG
+* PRIVILEGE_VIOLATION
