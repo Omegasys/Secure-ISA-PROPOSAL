@@ -1,0 +1,26 @@
+name: SANDBOX_EXIT
+category: Security/Sandbox
+format: R
+
+description: |
+Exits sandboxed execution and restores previous context.
+
+encoding:
+opcode: 0xC2
+fields: {}
+
+semantics: |
+RESTORE_PREVIOUS_CONTEXT()
+
+security:
+
+* controlled_exit_only
+* state_restoration_required
+
+side_effects:
+
+* restores_host_context
+
+exceptions:
+
+* INVALID_CONTEXT_SWITCH
