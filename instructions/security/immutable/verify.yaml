@@ -1,0 +1,42 @@
+name: IMMUTABLE_VERIFY
+category: Security/Immutable
+format: S
+
+description: |
+Verifies that a region marked immutable has not been modified.
+
+operands:
+
+* name: region_cap
+  type: CR
+  description: Memory region capability
+* name: hash_cap
+  type: CR
+  description: Output hash buffer
+
+encoding:
+opcode: 0xF4
+fields:
+region_cap: [11, 7]
+hash_cap: [19, 15]
+
+semantics: |
+assert(region_cap.perm includes READ)
+
+current_hash = HASH(region_cap.region)
+WRITE_MEMORY(hash_cap, current_hash)
+
+security:
+
+* integrity_verification
+* tamper_detection
+* capability_enforced_access
+
+side_effects:
+
+* produces_integrity_report
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* VERIFICATION_FAILURE
