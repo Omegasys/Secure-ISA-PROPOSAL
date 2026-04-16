@@ -1,0 +1,26 @@
+name: EXIT_SECURE
+category: System
+format: R
+
+description: |
+Exits secure execution mode and restores normal execution context.
+
+encoding:
+opcode: 0xA2
+fields: {}
+
+semantics: |
+EXIT_SECURE_MODE()
+RESTORE_CONTEXT()
+
+security:
+
+* controlled_domain_transition
+
+side_effects:
+
+* restores_execution_context
+
+exceptions:
+
+* INVALID_STATE
