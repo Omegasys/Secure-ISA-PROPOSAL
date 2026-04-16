@@ -1,0 +1,49 @@
+name: SYMMETRIC_ENCRYPT
+category: Crypto
+format: S
+
+description: |
+Encrypts or decrypts data using a symmetric key capability.
+
+operands:
+
+* name: key_cap
+  type: CR
+  description: Capability referencing symmetric key
+* name: data_cap
+  type: CR
+  description: Input data buffer
+* name: out_cap
+  type: CR
+  description: Output buffer
+
+encoding:
+opcode: 0x100
+fields:
+key_cap: [11, 7]
+data_cap: [19, 15]
+out_cap: [27, 23]
+
+semantics: |
+assert(key_cap.perm includes USE)
+assert(data_cap.perm includes READ)
+assert(out_cap.perm includes WRITE)
+
+out = SYM_CIPHER(key_cap.key, READ_MEMORY(data_cap))
+
+WRITE_MEMORY(out_cap, out)
+
+security:
+
+* key_isolation_required
+* no_raw_key_access
+* constant_time_mode_recommended
+
+side_effects:
+
+* cryptographic_transformation
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* CRYPTO_FAILURE
