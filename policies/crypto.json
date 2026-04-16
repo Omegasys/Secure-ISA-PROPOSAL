@@ -1,0 +1,25 @@
+{
+"crypto_policy": "strict_isolation",
+
+"keys": {
+"must_use_capabilities": true,
+"raw_key_access_prohibited": true,
+"hardware_backed_storage_required": true
+},
+
+"algorithms": {
+"symmetric_required": true,
+"asymmetric_required": true,
+"hybrid_supported": true,
+"post_quantum_allowed": true
+},
+
+"ratchets": {
+"forward_secrecy_required": true,
+"no_state_rewind": true
+},
+
+"execution": {
+"constant_time_required_for_sensitive_ops": true
+}
+}
