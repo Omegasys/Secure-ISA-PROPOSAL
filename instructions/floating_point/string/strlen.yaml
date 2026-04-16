@@ -1,0 +1,44 @@
+name: STRLEN
+category: String
+format: R
+
+description: |
+Computes length of a null-terminated string.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Length result
+* name: cs1
+  type: CR
+  description: String capability
+
+encoding:
+opcode: 0x72
+fields:
+rd: [11, 7]
+cs1: [19, 15]
+
+semantics: |
+i = 0
+while true:
+assert(cs1.base + i within cs1.bounds)
+
+```
+  if MEM[cs1.base + i] == 0:
+      break
+
+  i += 1
+```
+
+rd = i
+
+security:
+
+* capability_bounds_enforced
+* no_write_access
+
+exceptions:
+
+* CAPABILITY_VIOLATION
