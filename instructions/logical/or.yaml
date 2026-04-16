@@ -1,0 +1,39 @@
+name: OR
+category: Logical
+format: R
+
+description: |
+Performs bitwise OR between two registers.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: First operand
+* name: rs2
+  type: GPR
+  description: Second operand
+
+encoding:
+opcode: 0x21
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+rd = rs1 | rs2
+
+flags:
+
+* ZERO
+* NEGATIVE
+
+security:
+
+* constant_time
+
+exceptions: []
