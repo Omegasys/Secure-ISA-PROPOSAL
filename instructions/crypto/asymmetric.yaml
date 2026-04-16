@@ -1,0 +1,47 @@
+name: ASYMMETRIC_CRYPTO
+category: Crypto
+format: S
+
+description: |
+Performs asymmetric encryption or decryption using a key capability.
+
+operands:
+
+* name: key_cap
+  type: CR
+  description: Public or private key capability
+* name: data_cap
+  type: CR
+  description: Input data
+* name: out_cap
+  type: CR
+  description: Output buffer
+
+encoding:
+opcode: 0x101
+fields:
+key_cap: [11, 7]
+data_cap: [19, 15]
+out_cap: [27, 23]
+
+semantics: |
+assert(key_cap.tag == VALID)
+assert(data_cap.perm includes READ)
+
+result = ASYM_CRYPTO(key_cap.key_ref, READ_MEMORY(data_cap))
+
+WRITE_MEMORY(out_cap, result)
+
+security:
+
+* public_private_key_separation
+* capability_controlled_key_usage
+
+side_effects:
+
+* cryptographic_operation
+
+exceptions:
+
+* INVALID_KEY
+* CAPABILITY_VIOLATION
