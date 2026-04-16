@@ -1,0 +1,40 @@
+name: MAP_SECURE
+category: Virtualization
+format: S
+
+description: |
+Maps a secure memory region into a virtualized domain.
+
+operands:
+
+* name: region_cap
+  type: CR
+  description: Capability for secure region
+* name: virtual_cap
+  type: CR
+  description: Output virtual mapping capability
+
+encoding:
+opcode: 0xE2
+fields:
+region_cap: [11, 7]
+virtual_cap: [19, 15]
+
+semantics: |
+assert(region_cap.perm includes READ)
+
+virtual_cap = MAP_SECURE_REGION(region_cap)
+
+security:
+
+* secure_memory_isolation
+* capability_required_mapping
+
+side_effects:
+
+* creates_virtual_mapping
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* MAPPING_FAILED
