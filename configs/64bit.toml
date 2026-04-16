@@ -1,0 +1,29 @@
+bit_width = 64
+
+[registers]
+gpr_count = 32
+fpr_count = 32
+capability_registers = 16
+
+[memory]
+address_space = "64bit"
+max_memory = "16EB"
+page_size = 4096
+
+[capabilities]
+capability_width = 128
+enforce_bounds = true
+enable_sealing = true
+
+[security]
+secure_boot_required = true
+sandbox_default = "strict"
+constant_time_mode = true
+
+[virtualization]
+max_levels = 5
+enable_nested = true
+
+[crypto]
+hardware_acceleration = true
+minimum_key_strength = "256bit"
