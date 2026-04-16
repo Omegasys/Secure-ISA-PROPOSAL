@@ -1,0 +1,37 @@
+name: MAP_DEVICE
+category: IO
+format: S
+
+description: |
+Maps a hardware device into a controlled capability domain.
+
+operands:
+
+* name: cd
+  type: CR
+  description: Capability representing mapped region
+* name: device_id
+  type: immediate
+  description: Device identifier
+* name: permissions
+  type: immediate
+  description: Access permissions
+
+encoding:
+opcode: 0x82
+fields:
+cd: [11, 7]
+device_id: [19, 15]
+permissions: [31, 20]
+
+semantics: |
+cd = CREATE_DEVICE_CAPABILITY(device_id, permissions)
+
+security:
+
+* privileged_operation_required
+* device_isolation
+
+exceptions:
+
+* PRIVILEGE_VIOLATION
