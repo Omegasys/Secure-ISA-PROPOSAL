@@ -1,0 +1,50 @@
+name: ADD_CT
+category: Arithmetic
+format: R
+
+description: |
+Constant-time addition. Guarantees fixed latency independent of operand values.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: First operand
+* name: rs2
+  type: GPR
+  description: Second operand
+
+encoding:
+opcode: 0x15
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+result = rs1 + rs2
+rd = result
+
+flags:
+
+* ZERO
+* NEGATIVE
+* OVERFLOW
+* CARRY
+
+security:
+
+* constant_time (guaranteed)
+* no_data_dependent_timing
+* no_speculation
+
+exceptions:
+
+* INTEGER_OVERFLOW (optional)
+
+notes: |
+This instruction MUST execute in fixed cycles regardless of input values.
+Intended for cryptographic and side-channel-resistant code.
