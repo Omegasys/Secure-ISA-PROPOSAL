@@ -1,0 +1,41 @@
+name: REMOTE_CONNECT
+category: Security/Remote
+format: S
+
+description: |
+Establishes a secure remote connection to a trusted endpoint.
+
+operands:
+
+* name: endpoint_cap
+  type: CR
+  description: Capability describing remote endpoint
+* name: session_cap
+  type: CR
+  description: Output session capability
+
+encoding:
+opcode: 0xD0
+fields:
+endpoint_cap: [11, 7]
+session_cap: [19, 15]
+
+semantics: |
+assert(endpoint_cap.perm includes CONNECT)
+
+session_cap = CREATE_REMOTE_SESSION(endpoint_cap)
+
+security:
+
+* capability_required_connection
+* encrypted_channel_required
+* endpoint_validation_required
+
+side_effects:
+
+* establishes_remote_session
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* CONNECTION_FAILED
