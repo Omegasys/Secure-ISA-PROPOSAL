@@ -1,0 +1,52 @@
+name: STRCMP
+category: String
+format: R
+
+description: |
+Compares two null-terminated strings lexicographically.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Result (-1, 0, 1)
+* name: cs1
+  type: CR
+  description: First string capability
+* name: cs2
+  type: CR
+  description: Second string capability
+
+encoding:
+opcode: 0x71
+fields:
+rd: [11, 7]
+cs1: [19, 15]
+cs2: [24, 20]
+
+semantics: |
+i = 0
+while true:
+a = MEM[cs1.base + i]
+b = MEM[cs2.base + i]
+
+```
+  if a != b:
+      rd = (a < b) ? -1 : 1
+      break
+
+  if a == 0:
+      rd = 0
+      break
+
+  i += 1
+```
+
+security:
+
+* capability_bounds_enforced
+* constant_time (optional mode recommended for crypto contexts)
+
+exceptions:
+
+* CAPABILITY_VIOLATION
