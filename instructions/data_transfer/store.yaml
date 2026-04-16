@@ -1,0 +1,44 @@
+name: STORE
+category: DataTransfer
+format: S
+
+description: |
+Store data from a general-purpose register into memory using a capability-checked address.
+
+operands:
+
+* name: rs1
+  type: CR
+  description: Capability register providing base and bounds
+* name: rs2
+  type: GPR
+  description: Source register
+* name: offset
+  type: immediate
+  description: Signed offset from capability base
+
+encoding:
+opcode: 0x02
+fields:
+rs1: [19, 15]
+rs2: [24, 20]
+offset: [31, 7]
+
+semantics: |
+addr = rs1.base + offset
+assert(addr within rs1.bounds)
+assert(rs1.perm includes WRITE)
+
+MEM[addr] = rs2
+
+security:
+
+* capability_check
+* bounds_check
+* permission_check
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* ACCESS_FAULT
+* MISALIGNED_ACCESS
