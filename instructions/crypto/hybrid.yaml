@@ -1,0 +1,52 @@
+name: HYBRID_CRYPTO
+category: Crypto
+format: S
+
+description: |
+Hybrid encryption combining asymmetric key exchange and symmetric data encryption.
+
+operands:
+
+* name: pubkey_cap
+  type: CR
+  description: Public key capability
+* name: symkey_cap
+  type: CR
+  description: Symmetric key capability
+* name: data_cap
+  type: CR
+  description: Input data
+* name: out_cap
+  type: CR
+  description: Output buffer
+
+encoding:
+opcode: 0x102
+fields:
+pubkey_cap: [11, 7]
+symkey_cap: [19, 15]
+data_cap: [27, 23]
+out_cap: [31, 27]
+
+semantics: |
+session_key = KEY_EXCHANGE(pubkey_cap)
+encrypted_key = ASYM_WRAP(pubkey_cap, symkey_cap.key)
+
+ciphertext = SYM_CIPHER(session_key, READ_MEMORY(data_cap))
+
+WRITE_MEMORY(out_cap, (encrypted_key, ciphertext))
+
+security:
+
+* forward_secrecy_support
+* key_isolation
+* capability_bound_crypto
+
+side_effects:
+
+* generates_session_material
+
+exceptions:
+
+* CRYPTO_FAILURE
+* CAPABILITY_VIOLATION
