@@ -1,0 +1,34 @@
+name: BITREVERSE
+category: BitManipulation
+format: R
+
+description: |
+Reverses the bit order of a register (LSB <-> MSB).
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: Source register
+
+encoding:
+opcode: 0x32
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+
+semantics: |
+rd = reverse_bits(rs1)
+
+flags:
+
+* ZERO
+
+security:
+
+* constant_time
+
+exceptions: []
