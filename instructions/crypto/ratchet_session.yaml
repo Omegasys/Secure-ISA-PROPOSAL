@@ -1,0 +1,39 @@
+name: RATCHET_SESSION_INIT
+category: Crypto
+format: S
+
+description: |
+Initializes a secure ratchet session between two parties.
+
+operands:
+
+* name: key_cap
+  type: CR
+  description: Base key material
+* name: session_cap
+  type: CR
+  description: Output session capability
+
+encoding:
+opcode: 0x104
+fields:
+key_cap: [11, 7]
+session_cap: [19, 15]
+
+semantics: |
+assert(key_cap.perm includes USE)
+
+session_cap.state = INIT_RATCHET(key_cap.key)
+
+security:
+
+* forward_secrecy_enabled
+* ephemeral_state_generation
+
+side_effects:
+
+* creates_session_state
+
+exceptions:
+
+* CAPABILITY_VIOLATION
