@@ -1,0 +1,38 @@
+name: EXPORT_AUDIT
+category: Security/Audit
+format: S
+
+description: |
+Exports audit logs to a secure external buffer via capability.
+
+operands:
+
+* name: dest_cap
+  type: CR
+  description: Destination capability for exported logs
+
+encoding:
+opcode: 0xB3
+fields:
+dest_cap: [19, 15]
+
+semantics: |
+assert(dest_cap.perm includes WRITE)
+
+logs = AUDIT_LOG_FLUSH()
+WRITE_MEMORY(dest_cap, logs)
+
+security:
+
+* controlled_log_export
+* capability_enforced_write
+* audit_integrity_preserved
+
+side_effects:
+
+* exposes_audit_snapshot
+
+exceptions:
+
+* CAPABILITY_VIOLATION
+* EXPORT_FAILURE
