@@ -1,0 +1,44 @@
+name: ADD
+category: Arithmetic
+format: R
+
+description: |
+Adds two registers and stores the result in the destination register.
+
+operands:
+
+* name: rd
+  type: GPR
+  description: Destination register
+* name: rs1
+  type: GPR
+  description: First operand
+* name: rs2
+  type: GPR
+  description: Second operand
+
+encoding:
+opcode: 0x10
+fields:
+rd: [11, 7]
+rs1: [19, 15]
+rs2: [24, 20]
+
+semantics: |
+result = rs1 + rs2
+rd = result
+
+flags:
+
+* ZERO
+* NEGATIVE
+* OVERFLOW
+* CARRY
+
+security:
+
+* constant_time (implementation dependent)
+
+exceptions:
+
+* INTEGER_OVERFLOW (optional, configurable)
