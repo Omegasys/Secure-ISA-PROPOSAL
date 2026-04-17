@@ -48,3 +48,34 @@ impl Memory {
         Ok(())
     }
 }
+
+use std::collections::HashMap;
+
+pub struct MemoryRegion {
+    pub data: u8,
+    pub encrypted: bool,
+}
+
+pub struct Memory {
+    pub regions: HashMap<usize, MemoryRegion>,
+    pub key: Option<Vec<u8>>,
+}
+
+impl Memory {
+    pub fn set_key(&mut self, key: Vec<u8>) {
+        self.key = Some(key);
+    }
+
+    pub fn read(&self, addr: usize) -> Result<u8, String> {
+        let region = self.regions.get(&addr).ok_or("INVALID_ADDR")?;
+
+        let mut data = region.data;
+
+        if region.encrypted {
+            let key = self.key.as_ref().ok_or("MEMORY_LOCKED")?;
+            data ^= key[0]; // placeholder
+        }
+
+        Ok(data)
+    }
+}
